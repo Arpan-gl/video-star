@@ -1,7 +1,9 @@
+import dotenv from 'dotenv';
 import {app} from './app.js';
+import DBconnect from './db/index.js';
 
-const port = process.env.PORT || 3000;
+dotenv.config(
+    {path: "./.env"}
+);
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`)
-});
+DBconnect();
