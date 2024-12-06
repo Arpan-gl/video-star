@@ -58,7 +58,7 @@ const registerUser = asyncHandler(async (req,res)=>{
         coverImage: coverImage?.url || ""
     })
 
-    const createdUser = await User.findbyId(user._id).select("-password -refreshToken");
+    const createdUser = await User.findById(user._id).select("-password -refreshToken");
 
     if(!createdUser){
         throw new ApiError(500,"Something went wrong while registering the user");
