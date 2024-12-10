@@ -58,14 +58,14 @@ const registerUser = asyncHandler(async (req,res)=>{
     }
 
     if(!avatarLocalPath){
-        throw new ApiError(400,"Please provide avatar image 1");
+        throw new ApiError(400,"Please provide avatar image");
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath);
     const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
     if(!avatar){
-        throw new ApiError(400,"Please provide avatar image");
+        throw new ApiError(400,"Error while uploading on avatar");
     }
 
     const user = await User.create({

@@ -43,8 +43,8 @@ router.route("/User-detail").post(verifyJWT,getCurrentUser);
 
 router.route("/update-account-details").post(verifyJWT, updateAccountDetails);
 
-router.route("/update-avatar").post(upload.single(avatar),verifyJWT, updateUserAvatar);
+router.route("/update-avatar").post(upload.single("avatar"),verifyJWT, updateUserAvatar);
 
-router.route("/update-coverImage").post(upload.single(coverImage),verifyJWT, updateUserCoverImage);
+router.route("/update-coverImage").post(upload.single("coverImage"),verifyJWT, updateUserCoverImage);
 
 export default router;
