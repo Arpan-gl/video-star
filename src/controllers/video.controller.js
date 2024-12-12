@@ -3,7 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Video } from "../models/video.models.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
-import { User } from "../models/user.models.js";
+import mongoose, {isValidObjectId} from "mongoose";
 
 const publishAVideo = asyncHandler(async (req,res)=>{
     const {title, description} = req.body;
@@ -53,7 +53,7 @@ const publishAVideo = asyncHandler(async (req,res)=>{
 const getVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
 
-    if (!videoId) {
+    if (!isValidObjectId(videoId)) {
         throw new ApiError(400, "Video ID is required");
     }
 
@@ -74,7 +74,7 @@ const updateVideoById = asyncHandler(async (req, res) =>{
     const {videoId} = req.params;
     const {title, description} = req.body;
 
-    if(!videoId){
+    if(!isValidObjectId(videoId)){
         throw new ApiError(400,"Video ID is required");
     }
 
@@ -116,7 +116,7 @@ const updateVideoById = asyncHandler(async (req, res) =>{
 const deleteVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
     
-    if (!videoId) {
+    if (!isValidObjectId(videoId)) {
         throw new ApiError(400, "Video ID is required");
     }
 
@@ -132,7 +132,7 @@ const deleteVideoById = asyncHandler(async (req, res) => {
 const toggleVideoById = asyncHandler(async (req, res) => {
     const { videoId } = req.params;
     
-    if (!videoId) {
+    if (!isValidObjectId(videoId)) {
         throw new ApiError(400, "Video ID is required");
     }
 
