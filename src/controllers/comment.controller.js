@@ -66,7 +66,7 @@ const addComment = asyncHandler(async (req, res) => {
     const {videoId} = req.params;
     const userId = req.user._id;
 
-    if (!content) {
+    if (!(content.length)) {
         throw new ApiError(400, "Please provide comment content");
     }
 
@@ -100,7 +100,7 @@ const updateComment = asyncHandler(async (req,res)=>{
         throw new ApiError(400, "Invalid comment id");
     }
 
-    if(!content) {
+    if(!(content.length)) {
         throw new ApiError(400, "Please provide comment content");
     }
 

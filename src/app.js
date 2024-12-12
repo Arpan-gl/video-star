@@ -18,11 +18,13 @@ import userRoutes from './routes/user.routes.js';
 import videoRoutes from './routes/video.routes.js';
 import likeRouters from './routes/like.routes.js';
 import commentRouters from './routes/comment.routes.js';
+import tweetRouters from './routes/tweet.routes.js';
 
 // Router declarations
 app.use("/api/v1/user",userRoutes);
 app.use("/api/v1/video",videoRoutes);
 app.use("/api/v1/like",likeRouters);
 app.use("/api/v1/comment",commentRouters);
+app.use("/api/v1/tweet",tweetRouters);
 
 export {app};
