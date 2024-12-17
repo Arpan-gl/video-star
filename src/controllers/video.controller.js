@@ -39,7 +39,7 @@ const publishAVideo = asyncHandler(async (req,res)=>{
         videoFile:videoFile.url,
         thumbnail: thumbnail.url,
         duration:videoFile.duration,
-        views,
+        views:Video.views,
         owner:req.user._id
     })
 
@@ -136,7 +136,9 @@ const toggleVideoById = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Video ID is required");
     }
 
-    if(Video.findById(videoId).owner !== req.user._id) {
+    const videoOwner = await Video.findById(videoId).owner;
+     
+    if(videoOwner !== req.user._id) {
         throw new ApiError(403, "You are not authorized to perform this action");
     }
 
