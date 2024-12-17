@@ -1,6 +1,4 @@
-import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
-import {Tweet} from "../models/tweet.model.js";
-import {User} from "../models/user.model.js";
+import {Tweet} from "../models/tweet.models.js";
 import {ApiError} from "../utils/ApiError.js";
 import {ApiResponse} from "../utils/ApiResponse.js";
 import {asyncHandler} from "../utils/asyncHandler.js";
@@ -30,7 +28,7 @@ const createTweet = asyncHandler(async (req,res)=>{
     )
 });
 
-const getUserTweets = asyncHandler(async (req,req)=>{
+const getUserTweets = asyncHandler(async (req,res)=>{
     const {userId } = req.params;
 
     if(!isValidObjectId(userId)){
@@ -50,7 +48,7 @@ const getUserTweets = asyncHandler(async (req,req)=>{
     )
 });
 
-const updateTweet = asyncHandler(async (req,req)=>{
+const updateTweet = asyncHandler(async (req,res)=>{
     const {tweetId} = req.params;
     const { content } = req.body;
 
@@ -89,7 +87,7 @@ const updateTweet = asyncHandler(async (req,req)=>{
     )
 });
 
-const deleteTweet = asyncHandler(async (req,req)=>{
+const deleteTweet = asyncHandler(async (req,res)=>{
     const { tweetId } = req.params;
 
     if(!isValidObjectId(tweetId)){
