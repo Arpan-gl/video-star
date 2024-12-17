@@ -21,6 +21,8 @@ import commentRouters from './routes/comment.routes.js';
 import tweetRouters from './routes/tweet.routes.js';
 import subscriptionRouters from './routes/subscription.routes.js';
 import playlistRouters from './routes/playlist.routes.js';
+import dashboardRouters from './routes/dashboard.routes.js';
+import healthCheckRouters from './routes/healthcheck.routes.js';
 
 // Router declarations
 app.use("/api/v1/user",userRoutes);
@@ -30,5 +32,7 @@ app.use("/api/v1/comment",commentRouters);
 app.use("/api/v1/tweet",tweetRouters);
 app.use("/api/v1/subscription",subscriptionRouters);
 app.use("/api/v1/playlist",playlistRouters);
+app.use("/api/v1/dashboard", dashboardRouters);
+app.use("/api/v1/healthcheck", healthCheckRouters);
 
 export {app};
