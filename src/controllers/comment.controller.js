@@ -17,15 +17,21 @@ const getVideoComments = asyncHandler(async (req, res) => {
             $match:{
                 $and:[
                     {
-                        _id: mongoose.Types.ObjectId(userId)
+                        user: mongoose.Types.ObjectId(userId)
                     },
                     {
                         video: mongoose.Types.ObjectId(videoId)
                     }
                 ]
-            },
-            $skip:page-1*limit,
-            $limit: limit,
+            }
+        },
+        {
+            $skip: (page - 1) * limit
+        },
+        {
+            $limit: limit
+        },
+        {
             $lookup:{
                 from: "users",
                 localField: "user",
@@ -40,13 +46,19 @@ const getVideoComments = asyncHandler(async (req, res) => {
                         }
                     }
                 ]
-            },
-            $unwind : "$userView",
+            }
+        },
+        {
+            $unwind : "$userView"
+        },
+        {
             $addFields:{
-                userview:{
+                userView:{
                     $first:"$userView",
                 }
-            },
+            }
+        },
+        {
             $project:{
                 content:1,
                 userView:1
@@ -57,7 +69,7 @@ const getVideoComments = asyncHandler(async (req, res) => {
     return res
    .status(200)
    .json(
-        new ApiResponse(200, "Video comments fetch successfully", comments)
+        new ApiResponse(200, "Video comments fetched successfully", comments)
     )
 })
 
@@ -104,13 +116,17 @@ const updateComment = asyncHandler(async (req,res)=>{
         throw new ApiError(400, "Please provide comment content");
     }
 
-    const oldcommentuserId = await comment.findById(commentId).user
+    const oldComment = await Comment.findById(commentId);
 
-    if(oldcommentuserId !== userId){
-        throw new ApiError(403, "Unauthorized to delete this comment");
+    if(!oldComment){
+        throw new ApiError(404, "Comment not found");
     }
 
-    const comment = await Comment.findByIdAndUpdate(
+    if(oldComment.user.toString() !== userId.toString()){
+        throw new ApiError(403, "Unauthorized to update this comment");
+    }
+
+    const updatedComment = await Comment.findByIdAndUpdate(
         commentId,
         {
             $set:{
@@ -120,14 +136,10 @@ const updateComment = asyncHandler(async (req,res)=>{
         {new: true}
     );
 
-    if(!Comment){
-        throw new ApiError(404, "Comment not found");
-    }
-
     return res
    .status(200)
    .json(
-        new ApiResponse(200, "Comment updated successfully", comment)
+        new ApiResponse(200, "Comment updated successfully", updatedComment)
     )
 });
 
@@ -139,17 +151,17 @@ const deleteComment = asyncHandler(async (req,res)=>{
         throw new ApiError(400, "Invalid comment id");
     }
 
-    const oldcommentuserId = await comment.findById(commentId).user
+    const oldComment = await Comment.findById(commentId);
 
-    if(oldcommentuserId !== userId){
+    if(!oldComment){
+        throw new ApiError(404, "Comment not found");
+    }
+
+    if(oldComment.user.toString() !== userId.toString()){
         throw new ApiError(403, "Unauthorized to delete this comment");
     }
 
-    const comment = await Comment.findByIdAndDelete(commentId);
-
-    if(!comment){
-        throw new ApiError(404, "Comment not found");
-    }
+    await Comment.findByIdAndDelete(commentId);
 
     return res
    .status(200)
